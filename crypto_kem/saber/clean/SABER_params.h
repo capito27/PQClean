@@ -3,13 +3,14 @@
 
 
 /* Don't change anything below this line */
+/* Updated params to Dagger (ET 4 => 3, EP 10 => 9) */
 #define SABER_L 3
 #define SABER_MU 8
-#define SABER_ET 4
+#define SABER_ET 3
 
 #define SABER_N 256
 
-#define SABER_EP 10
+#define SABER_EP 9
 #define SABER_P (1 << SABER_EP)
 
 #define SABER_EQ 13

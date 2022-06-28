@@ -3,27 +3,37 @@
 #include "poly.h"
 #include <string.h>
 
+// Update POLT2BS to use dagger parameter set (ET = 3 instead of 4)
 void PQCLEAN_SABER_AVX2_POLT2BS(uint8_t bytes[SABER_SCALEBYTES_KEM], const poly *data) {
     size_t j;
     const uint16_t *in = data->coeffs;
     uint8_t *out = bytes;
-    for (j = 0; j < SABER_N / 2; j++) {
-        out[0] = (uint8_t) ((in[0] & 0x0f) | (in[1] << 4));
-        in += 2;
-        out += 1;
+    for (j = 0; j < SABER_N / 8; j++) {
+        out[0] = (uint8_t) ((in[0] & 0x7) | ((in[1] & 0x7) << 3) | (in[2] << 6));
+        out[1] = (uint8_t) (((in[2] >> 2) & 0x01) | ((in[3] & 0x7) << 1) | ((in[4] & 0x7) << 4) | (in[5] << 7));
+        out[2] = (uint8_t) (((in[5] >> 1) & 0x03) | ((in[6] & 0x7) << 2) | (in[7] << 5));
+        in += 8;
+        out += 3;
     }
 }
 
+// Update BS2POLT to use dagger parameter set (ET = 3 instead of 4)
 void PQCLEAN_SABER_AVX2_BS2POLT(poly *data, const uint8_t bytes[SABER_SCALEBYTES_KEM]) {
     /* This function does not reduce its output mod T */
     size_t j;
     const uint8_t *in = bytes;
     uint16_t *out = data->coeffs;
-    for (j = 0; j < SABER_N / 2; j++) {
+    for (j = 0; j < SABER_N / 8; j++) {
         out[0] = in[0];
-        out[1] = in[0] >> 4;
-        in += 1;
-        out += 2;
+        out[1] = in[0] >> 3;
+        out[2] = (in[0] >> 6) | (in[1] << 2);
+        out[3] = in[1] >> 1;
+        out[4] = in[1] >> 4;
+        out[5] = (in[1] >> 7) | (in[2] << 1);
+        out[6] = in[2] >> 2;
+        out[7] = in[2] >> 5;
+        in += 3;
+        out += 8;
     }
 }
 
@@ -69,32 +79,42 @@ static void BS2POLq(poly *data, const uint8_t bytes[SABER_POLYBYTES]) {
     }
 }
 
+// Update POLp2BS to use dagger parameter set (EP = 9 instead of 10)
 static void POLp2BS(uint8_t bytes[SABER_POLYCOMPRESSEDBYTES], const poly *data) {
     size_t j;
     const uint16_t *in = data->coeffs;
     uint8_t *out = bytes;
-    for (j = 0; j < SABER_N / 4; j++) {
+    for (j = 0; j < SABER_N / 8; j++) {
         out[0] = (uint8_t) (in[0]);
-        out[1] = (uint8_t) (((in[0] >> 8) & 0x03) | (in[1] << 2));
-        out[2] = (uint8_t) (((in[1] >> 6) & 0x0f) | (in[2] << 4));
-        out[3] = (uint8_t) (((in[2] >> 4) & 0x3f) | (in[3] << 6));
-        out[4] = (uint8_t) (in[3] >> 2);
-        in += 4;
-        out += 5;
+        out[1] = (uint8_t) (((in[0] >> 8) & 0x01) | (in[1] << 1));
+        out[2] = (uint8_t) (((in[1] >> 7) & 0x03) | (in[2] << 2));
+        out[3] = (uint8_t) (((in[2] >> 6) & 0x07) | (in[3] << 3));
+        out[4] = (uint8_t) (((in[3] >> 5) & 0x0f) | (in[4] << 4));
+        out[5] = (uint8_t) (((in[4] >> 4) & 0x1f) | (in[5] << 5));
+        out[6] = (uint8_t) (((in[5] >> 3) & 0x3f) | (in[6] << 6));
+        out[7] = (uint8_t) (((in[6] >> 2) & 0x7f) | (in[7] << 7));
+        out[8] = (uint8_t) (((in[7] >> 1) & 0xff));
+        in += 8;
+        out += 9;
     }
 }
 
+// Update BS2POLp to use dagger parameter set (EP = 9 instead of 10)
 static void BS2POLp(poly *data, const uint8_t bytes[SABER_POLYCOMPRESSEDBYTES]) {
     size_t j;
     const uint8_t *in = bytes;
     uint16_t *out = data->coeffs;
-    for (j = 0; j < SABER_N / 4; j++) {
+    for (j = 0; j < SABER_N / 8; j++) {
         out[0] = in[0] | (in[1] << 8);
-        out[1] = (in[1] >> 2) | (in[2] << 6);
-        out[2] = (in[2] >> 4) | (in[3] << 4);
-        out[3] = (in[3] >> 6) | (in[4] << 2);
-        in += 5;
-        out += 4;
+        out[1] = (in[1] >> 1) | (in[2] << 7);
+        out[2] = (in[2] >> 2) | (in[3] << 6);
+        out[3] = (in[3] >> 3) | (in[4] << 5);
+        out[4] = (in[4] >> 4) | (in[5] << 4);
+        out[5] = (in[5] >> 5) | (in[6] << 3);
+        out[6] = (in[6] >> 6) | (in[7] << 2);
+        out[7] = (in[7] >> 7) | (in[8] << 1);
+        in += 9;
+        out += 8;
     }
 }
 

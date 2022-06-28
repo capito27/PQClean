@@ -1,3 +1,19 @@
+## PQClean fork with Dagger tweaked saber
+
+This is a fork of the PQClean repo with a tweaked saber implementation, which implements the Dagger tweaked variant of the Saber cryptosystem.
+
+The Dagger crypto system is defined in the [Post-quantum WireGuard](https://eprint.iacr.org/2020/379.pdf).
+
+This variant changes the ET parameter from 4 to 3, and the EP parameter from 10 to 9. In doing so, it reduces the key and ciphertext sizes enough to be suitable for use in a single-packet customised wireguard handshake. 
+
+This is achieved without comprimising the security of the cryptosystem, by introducing a significantly larger failure-rate on decapsulation, while remaining significantly higher than the standard ethernet packet drop-rate.
+
+The params and their associated bit-packing and bit-unpacking code was updated to support this variant of saber.
+
+
+
+ORIGINAL README BELOW 
+
 # PQClean
 
 _[See the build status for each component here](.github/workflows/BADGES.md)_
