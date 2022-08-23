@@ -1,3 +1,11 @@
+# Tweaked kyber768 
+
+This fork implements a tweaked kyber768 variant with much higher (but still manageable) failure rate, as defined in : https://csrc.nist.gov/CSRC/media/Presentations/pq-wireguard-we-did-it-again/images-media/session-5-raynal-pq-wireguard.pdf
+
+This does not compromise the overall security of the scheme (even improves it, at the cost of a much higher failure rate of ~2^-17.5).
+
+###### Original README below
+
 # PQClean
 
 _[See the build status for each component here](.github/workflows/BADGES.md)_
