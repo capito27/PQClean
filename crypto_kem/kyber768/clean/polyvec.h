@@ -8,8 +8,14 @@ typedef struct {
     poly vec[KYBER_K];
 } polyvec;
 
-void PQCLEAN_KYBER768_CLEAN_polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], const polyvec *a);
-void PQCLEAN_KYBER768_CLEAN_polyvec_decompress(polyvec *r, const uint8_t a[KYBER_POLYVECCOMPRESSEDBYTES]);
+void PQCLEAN_KYBER768_CLEAN_polyvec_du_compress(uint8_t r[KYBER_POLY_DU_VECBYTES], const polyvec *a);
+void PQCLEAN_KYBER768_CLEAN_polyvec_du_decompress(polyvec *r, const uint8_t a[KYBER_POLY_DU_VECBYTES]);
+
+void PQCLEAN_KYBER768_CLEAN_polyvec_dv_compress(uint8_t r[KYBER_POLY_DV_VECBYTES], const polyvec *a);
+void PQCLEAN_KYBER768_CLEAN_polyvec_dv_decompress(polyvec *r, const uint8_t a[KYBER_POLY_DV_VECBYTES]);
+
+void PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress(uint8_t r[KYBER_POLY_DPK_VECBYTES], const polyvec *a);
+void PQCLEAN_KYBER768_CLEAN_polyvec_dpk_decompress(polyvec *r, const uint8_t a[KYBER_POLY_DPK_VECBYTES]);
 
 void PQCLEAN_KYBER768_CLEAN_polyvec_tobytes(uint8_t r[KYBER_POLYVECBYTES], const polyvec *a);
 void PQCLEAN_KYBER768_CLEAN_polyvec_frombytes(polyvec *r, const uint8_t a[KYBER_POLYVECBYTES]);

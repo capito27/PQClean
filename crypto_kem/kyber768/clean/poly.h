@@ -11,8 +11,14 @@ typedef struct {
     int16_t coeffs[KYBER_N];
 } poly;
 
-void PQCLEAN_KYBER768_CLEAN_poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const poly *a);
-void PQCLEAN_KYBER768_CLEAN_poly_decompress(poly *r, const uint8_t a[KYBER_POLYCOMPRESSEDBYTES]);
+void PQCLEAN_KYBER768_CLEAN_poly_du_compress(uint8_t r[KYBER_POLY_DU_BYTES], const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_du_decompress(poly *r, const uint8_t a[KYBER_POLY_DU_BYTES]);
+
+void PQCLEAN_KYBER768_CLEAN_poly_dv_compress(uint8_t r[KYBER_POLY_DV_BYTES], const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_dv_decompress(poly *r, const uint8_t a[KYBER_POLY_DV_BYTES]);
+
+void PQCLEAN_KYBER768_CLEAN_poly_dpk_compress(uint8_t r[KYBER_POLY_DPK_BYTES], const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_dpk_decompress(poly *r, const uint8_t a[KYBER_POLY_DPK_BYTES]);
 
 void PQCLEAN_KYBER768_CLEAN_poly_tobytes(uint8_t r[KYBER_POLYBYTES], const poly *a);
 void PQCLEAN_KYBER768_CLEAN_poly_frombytes(poly *r, const uint8_t a[KYBER_POLYBYTES]);

@@ -9,21 +9,39 @@
 
 #define KYBER_SYMBYTES 32   /* size in bytes of hashes, and seeds */
 #define KYBER_SSBYTES  32   /* size in bytes of shared key */
+// Tweaks kyber-768 internal parameters with the following internal values :
+// Du = 9 (was 10)
+// Dv = 3 (was 4)
+// Dpk = 8 (was 12) // Dpk is the compression value for public key encoding, from lossless to lossy
+// Results in much smaller key and cipher sizes, and much higher failure rate (from 2^-164 to ~2^-17)
+// without compromising the security of the cryptosystem.
 
+#define KYBER_DU 9
+#define KYBER_DV 3
+#define KYBER_DPK 8
+
+// Lossless poly(vec) serialization sizes
 #define KYBER_POLYBYTES     384
 #define KYBER_POLYVECBYTES  (KYBER_K * KYBER_POLYBYTES)
 
-#define KYBER_K 2
-#define KYBER_ETA1 3
-#define KYBER_POLYCOMPRESSEDBYTES    128
-#define KYBER_POLYVECCOMPRESSEDBYTES (KYBER_K * 320)
+// Lossy poly(vec) serialization sizes
+#define KYBER_POLY_DU_BYTES (KYBER_N * KYBER_DU / 8)
+#define KYBER_POLY_DU_VECBYTES (KYBER_K * KYBER_POLY_DU_BYTES)
+#define KYBER_POLY_DV_BYTES (KYBER_N * KYBER_DV / 8)
+#define KYBER_POLY_DV_VECBYTES (KYBER_K * KYBER_POLY_DV_BYTES)
+#define KYBER_POLY_DPK_BYTES (KYBER_N * KYBER_DPK / 8)
+#define KYBER_POLY_DPK_VECBYTES (KYBER_K * KYBER_POLY_DPK_BYTES)
 
+
+#define KYBER_K 3
+#define KYBER_ETA1 2
 #define KYBER_ETA2 2
 
 #define KYBER_INDCPA_MSGBYTES       (KYBER_SYMBYTES)
-#define KYBER_INDCPA_PUBLICKEYBYTES (KYBER_POLYVECBYTES + KYBER_SYMBYTES)
+#define KYBER_INDCPA_PUBLICKEYBYTES (KYBER_POLY_DPK_VECBYTES + KYBER_SYMBYTES)
 #define KYBER_INDCPA_SECRETKEYBYTES (KYBER_POLYVECBYTES)
-#define KYBER_INDCPA_BYTES          (KYBER_POLYVECCOMPRESSEDBYTES + KYBER_POLYCOMPRESSEDBYTES)
+// Du compressed polyvec | Dv compressed poly
+#define KYBER_INDCPA_BYTES          (KYBER_POLY_DU_VECBYTES + KYBER_POLY_DV_BYTES)
 
 #define KYBER_PUBLICKEYBYTES  (KYBER_INDCPA_PUBLICKEYBYTES)
 /* 32 bytes of additional space to save H(pk) */

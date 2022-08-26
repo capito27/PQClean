@@ -23,9 +23,9 @@ static void pack_pk(uint8_t r[KYBER_INDCPA_PUBLICKEYBYTES],
                     polyvec *pk,
                     const uint8_t seed[KYBER_SYMBYTES]) {
     size_t i;
-    PQCLEAN_KYBER768_CLEAN_polyvec_tobytes(r, pk);
+    PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress(r, pk);
     for (i = 0; i < KYBER_SYMBYTES; i++) {
-        r[i + KYBER_POLYVECBYTES] = seed[i];
+        r[i + KYBER_POLY_DPK_VECBYTES] = seed[i];
     }
 }
 
@@ -43,9 +43,9 @@ static void unpack_pk(polyvec *pk,
                       uint8_t seed[KYBER_SYMBYTES],
                       const uint8_t packedpk[KYBER_INDCPA_PUBLICKEYBYTES]) {
     size_t i;
-    PQCLEAN_KYBER768_CLEAN_polyvec_frombytes(pk, packedpk);
+    PQCLEAN_KYBER768_CLEAN_polyvec_dpk_decompress(pk, packedpk);
     for (i = 0; i < KYBER_SYMBYTES; i++) {
-        seed[i] = packedpk[i + KYBER_POLYVECBYTES];
+        seed[i] = packedpk[i + KYBER_POLY_DPK_VECBYTES];
     }
 }
 
@@ -85,8 +85,8 @@ static void unpack_sk(polyvec *sk, const uint8_t packedsk[KYBER_INDCPA_SECRETKEY
 *              poly *v: pointer to the input polynomial v
 **************************************************/
 static void pack_ciphertext(uint8_t r[KYBER_INDCPA_BYTES], polyvec *b, poly *v) {
-    PQCLEAN_KYBER768_CLEAN_polyvec_compress(r, b);
-    PQCLEAN_KYBER768_CLEAN_poly_compress(r + KYBER_POLYVECCOMPRESSEDBYTES, v);
+    PQCLEAN_KYBER768_CLEAN_polyvec_du_compress(r, b);
+    PQCLEAN_KYBER768_CLEAN_poly_dv_compress(r + KYBER_POLY_DU_VECBYTES, v);
 }
 
 /*************************************************
@@ -100,8 +100,8 @@ static void pack_ciphertext(uint8_t r[KYBER_INDCPA_BYTES], polyvec *b, poly *v) 
 *              - const uint8_t *c: pointer to the input serialized ciphertext
 **************************************************/
 static void unpack_ciphertext(polyvec *b, poly *v, const uint8_t c[KYBER_INDCPA_BYTES]) {
-    PQCLEAN_KYBER768_CLEAN_polyvec_decompress(b, c);
-    PQCLEAN_KYBER768_CLEAN_poly_decompress(v, c + KYBER_POLYVECCOMPRESSEDBYTES);
+    PQCLEAN_KYBER768_CLEAN_polyvec_du_decompress(b, c);
+    PQCLEAN_KYBER768_CLEAN_poly_dv_decompress(v, c + KYBER_POLY_DU_VECBYTES);
 }
 
 /*************************************************
