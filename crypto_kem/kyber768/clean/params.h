@@ -1,9 +1,6 @@
 #ifndef PQCLEAN_KYBER768_CLEAN_PARAMS_H
 #define PQCLEAN_KYBER768_CLEAN_PARAMS_H
 
-
-
-
 #define KYBER_N 256
 #define KYBER_Q 3329
 
@@ -20,6 +17,10 @@
 #define KYBER_DV 3
 #define KYBER_DPK 8
 
+#define KYBER_K 3
+#define KYBER_ETA1 2
+#define KYBER_ETA2 2
+
 // Lossless poly(vec) serialization sizes
 #define KYBER_POLYBYTES     384
 #define KYBER_POLYVECBYTES  (KYBER_K * KYBER_POLYBYTES)
@@ -33,9 +34,6 @@
 #define KYBER_POLY_DPK_VECBYTES (KYBER_K * KYBER_POLY_DPK_BYTES)
 
 
-#define KYBER_K 3
-#define KYBER_ETA1 2
-#define KYBER_ETA2 2
 
 #define KYBER_INDCPA_MSGBYTES       (KYBER_SYMBYTES)
 #define KYBER_INDCPA_PUBLICKEYBYTES (KYBER_POLY_DPK_VECBYTES + KYBER_SYMBYTES)
