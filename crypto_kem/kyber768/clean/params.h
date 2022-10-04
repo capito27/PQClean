@@ -9,7 +9,6 @@
 // Tweaks kyber-768 internal parameters with the following internal values :
 // Du = 9 (was 10)
 // Dv = 3 (was 4)
-// Dpk = 8 (was 12) // Dpk is the compression value for public key encoding, from lossless to lossy
 // Results in much smaller key and cipher sizes, and much higher failure rate (from 2^-164 to ~2^-17)
 // without compromising the security of the cryptosystem.
 

@@ -93,8 +93,8 @@ static void unpack_sk(polyvec *sk, const uint8_t packedsk[KYBER_INDCPA_SECRETKEY
 *              poly *v: pointer to the input polynomial v
 **************************************************/
 static void pack_ciphertext(uint8_t r[KYBER_INDCPA_BYTES], polyvec *b, poly *v) {
-    PQCLEAN_KYBER768_AVX2_polyvec_compress(r, b);
-    PQCLEAN_KYBER768_AVX2_poly_compress(r + KYBER_POLYVECCOMPRESSEDBYTES, v);
+    PQCLEAN_KYBER768_AVX2_polyvec_du_compress(r, b);
+    PQCLEAN_KYBER768_AVX2_poly_dv_compress(r + KYBER_POLY_DU_VECBYTES, v);
 }
 
 /*************************************************
@@ -108,8 +108,8 @@ static void pack_ciphertext(uint8_t r[KYBER_INDCPA_BYTES], polyvec *b, poly *v) 
 *              - const uint8_t *c: pointer to the input serialized ciphertext
 **************************************************/
 static void unpack_ciphertext(polyvec *b, poly *v, const uint8_t c[KYBER_INDCPA_BYTES]) {
-    PQCLEAN_KYBER768_AVX2_polyvec_decompress(b, c);
-    PQCLEAN_KYBER768_AVX2_poly_decompress(v, c + KYBER_POLYVECCOMPRESSEDBYTES);
+    PQCLEAN_KYBER768_AVX2_polyvec_du_decompress(b, c);
+    PQCLEAN_KYBER768_AVX2_poly_dv_decompress(v, c + KYBER_POLY_DU_VECBYTES);
 }
 
 /*************************************************
