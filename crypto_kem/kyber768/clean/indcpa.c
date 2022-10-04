@@ -23,9 +23,9 @@ static void pack_pk(uint8_t r[KYBER_INDCPA_PUBLICKEYBYTES],
                     polyvec *pk,
                     const uint8_t seed[KYBER_SYMBYTES]) {
     size_t i;
-    PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress(r, pk);
+    PQCLEAN_KYBER768_CLEAN_polyvec_tobytes(r, pk);
     for (i = 0; i < KYBER_SYMBYTES; i++) {
-        r[i + KYBER_POLY_DPK_VECBYTES] = seed[i];
+        r[i + KYBER_POLYVECBYTES] = seed[i];
     }
 }
 
@@ -43,9 +43,9 @@ static void unpack_pk(polyvec *pk,
                       uint8_t seed[KYBER_SYMBYTES],
                       const uint8_t packedpk[KYBER_INDCPA_PUBLICKEYBYTES]) {
     size_t i;
-    PQCLEAN_KYBER768_CLEAN_polyvec_dpk_decompress(pk, packedpk);
+    PQCLEAN_KYBER768_CLEAN_polyvec_frombytes(pk, packedpk);
     for (i = 0; i < KYBER_SYMBYTES; i++) {
-        seed[i] = packedpk[i + KYBER_POLY_DPK_VECBYTES];
+        seed[i] = packedpk[i + KYBER_POLYVECBYTES];
     }
 }
 

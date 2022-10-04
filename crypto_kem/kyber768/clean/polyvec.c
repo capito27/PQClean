@@ -70,39 +70,6 @@ void PQCLEAN_KYBER768_CLEAN_polyvec_dv_decompress(polyvec *r, const uint8_t a[KY
 }
 
 /*************************************************
-* Name:        PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress
-*
-* Description: Compress with factor dpk=8 and serialize vector of polynomials
-*
-* Arguments:   - uint8_t *r: pointer to output byte array
-*                            (needs space for KYBER_POLY_DPK_VECBYTES)
-*              - const polyvec *a: pointer to input vector of polynomials
-**************************************************/
-void PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress(uint8_t r[KYBER_POLY_DPK_VECBYTES], const polyvec *a) {
-    unsigned int i;
-    for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_CLEAN_poly_dpk_compress(r + i * KYBER_POLY_DPK_BYTES, &a->vec[i]);
-    }
-}
-
-/*************************************************
-* Name:        PQCLEAN_KYBER768_CLEAN_polyvec_dpk_decompress
-*
-* Description: De-serialize and decompress with factor dpk=8 vector of polynomials;
-*              approximate inverse of PQCLEAN_KYBER768_CLEAN_polyvec_dpk_compress
-*
-* Arguments:   - polyvec *r:       pointer to output vector of polynomials
-*              - const uint8_t *a: pointer to input byte array
-*                                  (of length KYBER_POLY_DPK_BYTES)
-**************************************************/
-void PQCLEAN_KYBER768_CLEAN_polyvec_dpk_decompress(polyvec *r, const uint8_t a[KYBER_POLY_DPK_VECBYTES]) {
-    unsigned int i;
-    for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_CLEAN_poly_dpk_decompress(&r->vec[i], a + i * KYBER_POLY_DPK_BYTES);
-    }
-}
-
-/*************************************************
 * Name:        PQCLEAN_KYBER768_CLEAN_polyvec_tobytes
 *
 * Description: Serialize vector of polynomials

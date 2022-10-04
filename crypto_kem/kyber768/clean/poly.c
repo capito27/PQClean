@@ -132,69 +132,6 @@ void PQCLEAN_KYBER768_CLEAN_poly_dv_decompress(poly *r, const uint8_t a[KYBER_PO
 }
 
 /*************************************************
-* Name:        PQCLEAN_KYBER768_CLEAN_poly_dpk_compress
-*
-* Description: Compression with factor dpk=8 and subsequent serialization of a polynomial
-*
-* Arguments:   - uint8_t *r: pointer to output byte array
-*                            (of length KYBER_POLY_DPK_BYTES)
-*              - const poly *a: pointer to input polynomial
-**************************************************/
-void PQCLEAN_KYBER768_CLEAN_poly_dpk_compress(uint8_t r[KYBER_POLY_DPK_BYTES], const poly *a) {
-    unsigned int i, j;
-
-    uint16_t t[8];
-    for (i = 0; i < KYBER_N / 8; i++) {
-        for (j = 0; j < 8; j++) {
-            t[j]  = a->coeffs[8 * i + j];
-            t[j] += ((int16_t)t[j] >> 15) & KYBER_Q;
-            t[j]  = ((((uint32_t)t[j] << 8) + KYBER_Q / 2) / KYBER_Q) & 0xff;
-        }
-
-        r[ 0] = (uint8_t)(t[0]); // 8
-        r[ 1] = (uint8_t)(t[1]); // 8
-        r[ 2] = (uint8_t)(t[2]); // 8
-        r[ 3] = (uint8_t)(t[3]); // 8
-        r[ 4] = (uint8_t)(t[4]); // 8
-        r[ 5] = (uint8_t)(t[5]); // 8
-        r[ 6] = (uint8_t)(t[6]); // 8
-        r[ 7] = (uint8_t)(t[7]); // 8
-        r += 8;
-    }
-}
-
-/*************************************************
-* Name:        PQCLEAN_KYBER768_CLEAN_poly_dpk_decompress
-*
-* Description: De-serialization and subsequent decompression with factor dpk=8 of a polynomial;
-*              approximate inverse of PQCLEAN_KYBER768_CLEAN_poly_dpk_compress
-*
-* Arguments:   - poly *r: pointer to output polynomial
-*              - const uint8_t *a: pointer to input byte array
-*                                  (of length KYBER_POLY_DPK_BYTES bytes)
-**************************************************/
-void PQCLEAN_KYBER768_CLEAN_poly_dpk_decompress(poly *r, const uint8_t a[KYBER_POLY_DPK_BYTES]) {
-    unsigned int i, j;
-
-    uint16_t t[8];
-    for (i = 0; i < KYBER_N / 8; i++) {
-        t[0] = a[0]; // 8
-        t[1] = a[1]; // 8
-        t[2] = a[2]; // 8
-        t[3] = a[3]; // 8
-        t[4] = a[4]; // 8
-        t[5] = a[5]; // 8
-        t[6] = a[6]; // 8
-        t[7] = a[7]; // 8
-        a += 8;
-
-        for (j = 0; j < 8; j++) {
-            r->coeffs[8 * i + j] = ((uint32_t)(t[j] & 0xFF) * KYBER_Q + 128) >> 8;
-        }
-    }
-}
-
-/*************************************************
 * Name:        PQCLEAN_KYBER768_CLEAN_poly_tobytes
 *
 * Description: Serialization of a polynomial
